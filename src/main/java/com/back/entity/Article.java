@@ -1,4 +1,4 @@
-package com.back;
+package com.back.entity;
 
 import lombok.Getter;
 import lombok.Setter;

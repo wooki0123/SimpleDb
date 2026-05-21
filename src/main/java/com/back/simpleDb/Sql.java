@@ -1,10 +1,8 @@
-package com.back;
-
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+package com.back.simpleDb;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +11,7 @@ public class Sql {
 
     // sql 쿼리를 담는 StringBuilder와 쿼리의 파라미터를 담는 List
     private final StringBuilder stringBuilder = new StringBuilder();
-    private final List<Object> params = new ArrayList<>();
+    private final List<Object> param = new ArrayList<>();
 
     public Sql(SimpleDb simpleDb) {
         this.simpleDb = simpleDb;
@@ -21,6 +19,9 @@ public class Sql {
 
     // 개별 인자로 전달하기 위한 오버로딩된 append 메서드
     public Sql append(String sql, Object... params) {
+        stringBuilder.append(sql).append(" ");
+        this.param.addAll(Arrays.asList(params));
+
         return this;
     }
 
@@ -41,7 +42,7 @@ public class Sql {
         return 0;
     }
 
-    public <T> List<Map<String, Object>> selectRows() {
+    public List<Map<String, Object>> selectRows() {
         return null;
     }
 
@@ -49,7 +50,7 @@ public class Sql {
         return null;
     }
 
-    public <T> Map<String, T> selectRow() {
+    public Map<String, Object> selectRow() {
         return null;
     }
 

@@ -1,10 +1,21 @@
-package com.back;
+package com.back.simpleDb;
+
+import java.sql.Connection;
 
 public class SimpleDb {
-    public void setDevMode(boolean b) {
-    }
+    private final String localhost;
+    private final String root;
+    private final String password;
+    private final String log;
 
     public SimpleDb(String localhost, String root, String password, String log) {
+        this.localhost = localhost;
+        this.root = root;
+        this.password = password;
+        this.log = log;
+    }
+
+    public void setDevMode(boolean b) {
     }
 
     public void run(String sql) {
