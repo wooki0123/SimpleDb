@@ -1,0 +1,79 @@
+package com.back;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class Sql {
+    private final SimpleDb simpleDb;
+
+    // sql 쿼리를 담는 StringBuilder와 쿼리의 파라미터를 담는 List
+    private final StringBuilder stringBuilder = new StringBuilder();
+    private final List<Object> params = new ArrayList<>();
+
+    public Sql(SimpleDb simpleDb) {
+        this.simpleDb = simpleDb;
+    }
+
+    // 개별 인자로 전달하기 위한 오버로딩된 append 메서드
+    public Sql append(String sql, Object... params) {
+        return this;
+    }
+
+    // 개별 인자로 전달하기 위한 오버로딩된 appendIn 메서드
+    public Sql appendIn(String sql, Object... params) {
+        return this;
+    }
+
+    public long insert() {
+        return 0;
+    }
+
+    public int update() {
+        return 0;
+    }
+
+    public int delete() {
+        return 0;
+    }
+
+    public <T> List<Map<String, Object>> selectRows() {
+        return null;
+    }
+
+    public <T> List<T> selectRows(Class<T> cls) {
+        return null;
+    }
+
+    public <T> Map<String, T> selectRow() {
+        return null;
+    }
+
+    public <T> T selectRow(Class<T> cls) {
+        return null;
+    }
+
+    public LocalDateTime selectDatetime() {
+        return null;
+    }
+
+    public Long selectLong() {
+        return null;
+    }
+
+    public List<Long> selectLongs() {
+        return null;
+    }
+
+    public String selectString() {
+        return null;
+    }
+
+    public Boolean selectBoolean() {
+        return null;
+    }
+}
