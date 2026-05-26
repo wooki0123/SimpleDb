@@ -2,15 +2,9 @@ package com.back.simpleDb;
 
 import lombok.SneakyThrows;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Sql {
     private final SimpleDb simpleDb;
@@ -74,8 +68,26 @@ public class Sql {
         return buildStatement(false).executeUpdate();
     }
 
+    @SneakyThrows
     public List<Map<String, Object>> selectRows() {
-        return null;
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        PreparedStatement ps = buildStatement(false);
+        ResultSet rs = ps.executeQuery();
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // 쿼리 끝까지 반복
+        while (rs.next()) {
+            Map<String, Object> row = new HashMap<>();
+            // 리스트에 각 컬럼값 입력
+            for (int i=1; i<=metaData.getColumnCount(); i++) {
+                String columnName = metaData.getColumnName(i);
+                Object value = rs.getObject(i);
+                row.put(columnName, value);
+            }
+            result.add(row);
+        }
+        return result;
     }
 
     public <T> List<T> selectRows(Class<T> cls) {

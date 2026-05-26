@@ -154,6 +154,7 @@ public class SimpleDbTest {
         */
         sql.append("SELECT * FROM article ORDER BY id ASC LIMIT 3");
         List<Map<String, Object>> articleRows = sql.selectRows();
+        System.out.println(articleRows.get(0).keySet());
 
         IntStream.range(0, articleRows.size()).forEach(i -> {
             long id = i + 1;
