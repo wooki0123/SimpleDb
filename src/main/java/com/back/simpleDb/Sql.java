@@ -136,8 +136,14 @@ public class Sql {
         return rs.getObject(1, LocalDateTime.class);
     }
 
+    @SneakyThrows
     public Long selectLong() {
-        return null;
+        PreparedStatement ps = buildStatement(false);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+
+        // Sql 실행 결과는 id이므로, selectDateTime과 구조적으로 동일함
+        return rs.getLong(1);
     }
 
     public List<Long> selectLongs() {
