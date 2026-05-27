@@ -90,12 +90,33 @@ public class Sql {
         return result;
     }
 
+    @SneakyThrows
     public <T> List<T> selectRows(Class<T> cls) {
-        return null;
+        List<T> result = new ArrayList<>();
+
+        PreparedStatement ps = buildStatement(false);
+        ResultSet rs = ps.executeQuery();
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        // 쿼리 끝까지 반복
+        while (rs.next()) {
+            Map<String, Object> row = new HashMap<>();
+            // 리스트에 각 컬럼값 입력
+            for (int i=1; i<=metaData.getColumnCount(); i++) {
+                String columnName = metaData.getColumnName(i);
+                Object value = rs.getObject(i);
+                row.put(columnName, value);
+            }
+        }
+        return result;
     }
 
+    @SneakyThrows
     public Map<String, Object> selectRow() {
-        return null;
+        // selectRows() 메서드를 호출하여 결과를 가져오고, 결과가 비어있지 않으면 첫 번째 행을 반환
+        List<Map<String, Object>> rows = selectRows();
+
+        return rows.isEmpty() ? null : rows.get(0);
     }
 
     public <T> T selectRow(Class<T> cls) {
