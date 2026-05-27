@@ -21,7 +21,8 @@ public class SimpleDb {
     public Connection getConnection() {
         try {
             return DriverManager.getConnection(
-                    "jdbc:mysql://" + localhost + ":3306/" + log,
+                    // 시간대 설정 추가, MySQL 서버의 시간대와 애플리케이션의 시간대를 맞추기 위해 사용
+                    "jdbc:mysql://" + localhost + ":3306/" + log + "?sessionVariables=time_zone='%2B09:00'",
                     root,
                     password
             );

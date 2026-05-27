@@ -123,8 +123,17 @@ public class Sql {
         return null;
     }
 
+    @SneakyThrows
     public LocalDateTime selectDatetime() {
-        return null;
+        PreparedStatement ps = buildStatement(false);
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+
+        // SELECT NOW()를 실행하면 결과는 1개(시간)이므로
+        // rs.getTimestamp(1)로 첫 번째 컬럼의 값을 가져와
+        // LocalDateTime으로 변환하여 반환
+        // getTimeStamp는 시간대 차이로 인해 getObject로 변경
+        return rs.getObject(1, LocalDateTime.class);
     }
 
     public Long selectLong() {
