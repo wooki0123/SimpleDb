@@ -13,6 +13,8 @@ public class SimpleDb {
     private final String password;
     private final String log;
 
+    private boolean devMode;
+
     private Connection connection;
 
     public SimpleDb(String localhost, String root, String password, String log) {
@@ -44,7 +46,9 @@ public class SimpleDb {
         }
     }
 
-    public void setDevMode(boolean b) {
+    public void setDevMode(boolean devMode) {
+        // Lombok으로 devMode를 세팅해서 작성할 필요 없음
+        // this.devMode = devMode;
     }
 
     // 개별 인자로 전달하기 위한 오버로딩된 run 메서드
@@ -67,7 +71,13 @@ public class SimpleDb {
         return new Sql(this);
     }
 
+    @SneakyThrows
     public void close() {
+        // 현재 커넥션 종료
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+            connection = null;
+        }
     }
 
     @SneakyThrows
