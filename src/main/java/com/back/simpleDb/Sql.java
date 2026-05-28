@@ -27,6 +27,14 @@ public class Sql {
 
     // 개별 인자로 전달하기 위한 오버로딩된 appendIn 메서드
     public Sql appendIn(String sql, Object... params) {
+        // Sql문에 있는 ?의 수를 파라미터 개수만큼 증가
+        String parameters = String.join(", ", Collections.nCopies(params.length, "?"));
+        // 전달받은 Sql문을 수정
+        String sqlNew = sql.replace("?", parameters);
+
+        stringBuilder.append(sqlNew).append(" ");
+        this.param.addAll(Arrays.asList(params));
+
         return this;
     }
 
@@ -37,7 +45,7 @@ public class Sql {
 
         PreparedStatement ps = connection.prepareStatement(
                 stringBuilder.toString(),
-                Statement.RETURN_GENERATED_KEYS
+                returnKeys ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS
         );
 
         for (int i=0; i<param.size(); i++) {
@@ -146,8 +154,19 @@ public class Sql {
         return rs.getObject(1, Long.class);
     }
 
+    @SneakyThrows
     public List<Long> selectLongs() {
-        return null;
+        List<Long> result = new ArrayList<>();
+
+        PreparedStatement ps = buildStatement(false);
+        ResultSet rs = ps.executeQuery();
+
+        // 쿼리 끝까지 반복
+        while (rs.next()) {
+            result.add(rs.getLong(1));
+        }
+
+        return result;
     }
 
     @SneakyThrows
@@ -165,6 +184,7 @@ public class Sql {
         ResultSet rs = ps.executeQuery();
         rs.next();
 
+        // 단일 Boolean값을 조회하는 t010, t011도 같이 처리됨
         return rs.getObject(1, Boolean.class);
     }
 }
